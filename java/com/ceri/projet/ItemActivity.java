@@ -7,23 +7,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class TeamActivity extends AppCompatActivity {
+public class ItemActivity extends AppCompatActivity {
 
-    private static final String TAG = TeamActivity.class.getSimpleName();
+    private static final String TAG = ItemActivity.class.getSimpleName();
     static final public int ASK_WRITE_PERMISSIONS_REQUEST = 1002;
     private TextView textTeamName, textLeague, textManager, textStadium, textStadiumLocation,
             textTotalScore, textRanking, textLastMatch, textLastUpdate;
@@ -42,7 +41,7 @@ public class TeamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team);
+        setContentView(R.layout.activity_item);
 
         item = (Item) getIntent().getParcelableExtra(Item.TAG);
 
@@ -65,7 +64,7 @@ public class TeamActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                new UpdateTeamTask(TeamActivity.this.item).execute();
+                new UpdateTeamTask(ItemActivity.this.item).execute();
             }
         });
 
@@ -119,13 +118,13 @@ public class TeamActivity extends AppCompatActivity {
 //                recuperation du logo
                 if(exist)
                 {
-                    String path = TeamActivity.this.getApplicationContext().getExternalFilesDir(null).toString();
+                    String path = ItemActivity.this.getApplicationContext().getExternalFilesDir(null).toString();
                     File file = new File(path, this.item.getId() + ".png");
                     if(!file.exists())
                     {
                         Bitmap img = ApiComBny.downloadTeamBadge(this.item.getTeamBadge());
 
-                        if(img != null && ContextCompat.checkSelfPermission(TeamActivity.this.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                        if(img != null && ContextCompat.checkSelfPermission(ItemActivity.this.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
                         {
                             OutputStream os = null;
                             os = new FileOutputStream(file);
@@ -147,8 +146,8 @@ public class TeamActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
 
-            TeamActivity.this.setItem(this.item);
-            TeamActivity.this.updateView();
+            ItemActivity.this.setItem(this.item);
+            ItemActivity.this.updateView();
         }
     }
 

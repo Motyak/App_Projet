@@ -64,7 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on : "+nomEquipe);
 
-                Intent intent = new Intent(v.getContext(),TeamActivity.class);
+                Intent intent = new Intent(v.getContext(), ItemActivity.class);
                 intent.putExtra(Item.TAG, equipe);
                 Log.d("wouloulou", "onClick: " + equipe.getId());
                 ((Activity)v.getContext()).startActivityForResult(intent, MainActivity.UPDATE_TEAM_REQUEST);

@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        ask for writing permissions if not already granted
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, TeamActivity.ASK_WRITE_PERMISSIONS_REQUEST);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ItemActivity.ASK_WRITE_PERMISSIONS_REQUEST);
     }
 
     @Override
