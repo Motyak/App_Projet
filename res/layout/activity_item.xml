@@ -17,9 +17,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:ellipsize="marquee"
-            android:singleLine="true"
             android:text="Nom"
+            android:gravity="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,13 +66,12 @@
             android:id="@+id/itemCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="25dp"
             android:text="categories,........................................"
-            android:ellipsize="marquee"
-            android:singleLine="true"
             android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemBrand" />
 
@@ -81,9 +79,6 @@
             android:id="@+id/itemDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:minLines="1"
-            android:maxLines = "6"
             android:text="description\n2\n3\n4\n5\ndescriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnx123"
             android:textSize="15sp"
             android:layout_marginTop="30dp"
@@ -124,7 +119,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/technicalDetails"
+            android:id="@+id/itemDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -136,6 +131,7 @@
             />
 
         <TextView
+            android:id="@+id/itemLastUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -143,7 +139,7 @@
             android:layout_marginRight="10dp"
             android:text="Dernière mise à jour : "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/technicalDetails"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetails"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
