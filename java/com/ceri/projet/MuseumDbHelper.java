@@ -173,7 +173,8 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
     public void populate() {
         Log.d(TAG, "call populate()");
 
-        ItemImage itemImage = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+        ItemImage itemImage1 = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+        ItemImage itemImage2 = new ItemImage("DESCRIPTION", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
         Item item = new Item();
         item.setWebId("poupou");
         item.setName("Lecteur de cartouches amovibles 88 Mio");
@@ -184,7 +185,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         item.setCategories(new ArrayList<String>(Arrays.asList("périphérique", "support de stockage", "SCSI", "some stuff")));
         item.setTechnicalDetails(new ArrayList<String>(Arrays.asList("Cartouches à disque dur, format 5¼ pouces", "Capacité de 88 Mo par cartouche", "Connexion SCSI")));
         item.setLastUpdate();
-        item.setPictures(new ArrayList<ItemImage>(Arrays.asList(itemImage)));
+        item.setPictures(new ArrayList<ItemImage>(Arrays.asList(itemImage1, itemImage2)));
 
         this.addItem(item);
 

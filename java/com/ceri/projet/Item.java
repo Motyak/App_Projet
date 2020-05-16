@@ -73,6 +73,7 @@ public class Item implements Parcelable {
                 ArrayList<ItemImage> pictures, ArrayList<String> technicalDetails, String lastUpdate)
     {
         this.id = id;
+        this.webId = webId;
         this.name = name;
         this.brand = brand;
         this.year = year;
@@ -105,7 +106,9 @@ public class Item implements Parcelable {
         dest.writeList(timeFrame);
         dest.writeList(categories);
         dest.writeString(desc);
-//        dest.writeTypedList(pictures);
+
+        dest.writeTypedList(pictures);
+
         dest.writeList(technicalDetails);
         dest.writeString(lastUpdate);
     }
@@ -134,7 +137,10 @@ public class Item implements Parcelable {
         this.timeFrame = in.readArrayList(Integer.class.getClassLoader());
         this.categories = in.readArrayList(String.class.getClassLoader());
         this.desc = in.readString();
-//        in.readTypedList(this.pictures, ItemImage.CREATOR);
+
+        if(this.pictures == null) { this.pictures = new ArrayList<>(); }
+        in.readTypedList(this.pictures, ItemImage.CREATOR);
+
         this.technicalDetails = in.readArrayList(String.class.getClassLoader());
         this.lastUpdate = in.readString();
     }
