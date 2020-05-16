@@ -36,6 +36,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
     public static final String _ID = "_id";
     public static final String COLUMN_WEB_ID = "web_id";
     public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_THUMBNAIL = "thumbnail";
     public static final String COLUMN_BRAND = "brand";
     public static final String COLUMN_YEAR = "year";
     public static final String COLUMN_TIME_FRAME = "time_frame";
@@ -58,6 +59,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_WEB_ID + " TEXT NOT NULL, " +
                 COLUMN_NAME + " TEXT NOT NULL, " +
+                COLUMN_THUMBNAIL + " TEXT, " +
                 COLUMN_BRAND + " TEXT, " +
                 COLUMN_YEAR + " INTEGER, " +
                 COLUMN_TIME_FRAME + " TEXT, " +
@@ -88,6 +90,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEB_ID, item.getWebId());
         values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_THUMBNAIL, item.getThumbnail());
         values.put(COLUMN_BRAND, item.getBrand());
         values.put(COLUMN_YEAR, item.getYear());
         values.put(COLUMN_TIME_FRAME, gson.toJson(item.getTimeFrame()));
@@ -178,6 +181,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         Item item = new Item();
         item.setWebId("poupou");
         item.setName("Lecteur de cartouches amovibles 88 Mio");
+        item.setThumbnail("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
         item.setBrand("SyQuest Technology");
         item.setYear(1991);
         item.setTimeFrame(new ArrayList<Integer>(Arrays.asList(1990)));
@@ -212,6 +216,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         Item item = new Item(cursor.getLong(cursor.getColumnIndex(_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_WEB_ID)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_NAME)),
+                cursor.getString(cursor.getColumnIndex(COLUMN_THUMBNAIL)),
                 cursor.getString(cursor.getColumnIndex(COLUMN_BRAND)),
                 cursor.getInt(cursor.getColumnIndex(COLUMN_YEAR)),
                 timeFrames,

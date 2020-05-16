@@ -79,8 +79,6 @@ public class ItemActivity extends AppCompatActivity {
         String lastUpdate = "Dernière mise à jour : " + this.item.getLastUpdate();
         this.txtLastUpdate.setText(lastUpdate);
 
-
-        System.out.println(this.item.getTechnicalDetails().get(0));
         Glide.with(this)
                 .load("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail")
                 .centerCrop()

@@ -18,6 +18,7 @@ public class Item implements Parcelable {
 
     private String webId; //used for web service
     private String name;
+    private String thumbnail;
     private String brand;
     private int year;
     private ArrayList<Integer> timeFrame;
@@ -35,6 +36,9 @@ public class Item implements Parcelable {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getThumbnail() { return this.thumbnail; }
+    public void setThumbnail(String url) { this.thumbnail = url; }
 
     public String getBrand() { return brand; }
     public void setBrand(String brand) { this.brand = brand; }
@@ -68,13 +72,14 @@ public class Item implements Parcelable {
         ;
     }
 
-    public Item(long id, String webId, String name, String brand, int year,
+    public Item(long id, String webId, String name, String thumbnail, String brand, int year,
                 ArrayList<Integer> timeFrame, ArrayList<String> categories, String desc,
                 ArrayList<ItemImage> pictures, ArrayList<String> technicalDetails, String lastUpdate)
     {
         this.id = id;
         this.webId = webId;
         this.name = name;
+        this.thumbnail = thumbnail;
         this.brand = brand;
         this.year = year;
         this.timeFrame = timeFrame;
@@ -101,6 +106,7 @@ public class Item implements Parcelable {
 
         dest.writeLong(id);
         dest.writeString(name);
+        dest.writeString(thumbnail);
         dest.writeString(brand);
         dest.writeInt(year);
         dest.writeList(timeFrame);
@@ -132,6 +138,7 @@ public class Item implements Parcelable {
     public Item(Parcel in) {
         this.id = in.readLong();
         this.name = in.readString();
+        this.thumbnail = in.readString();
         this.brand = in.readString();
         this.year = in.readInt();
         this.timeFrame = in.readArrayList(Integer.class.getClassLoader());
