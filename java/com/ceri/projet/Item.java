@@ -23,7 +23,7 @@ public class Item implements Parcelable {
     private ArrayList<Integer> timeFrame;
     private ArrayList<String> categories;
     private String desc;
-    private ArrayList<String> pictures;
+    private ArrayList<ItemImage> pictures;
     private ArrayList<String> technicalDetails;
     private String lastUpdate;
 
@@ -51,8 +51,8 @@ public class Item implements Parcelable {
     public String getDesc() { return desc; }
     public void setDesc(String desc) { this.desc = desc; }
 
-    public ArrayList<String> getPictures() { return pictures; }
-    public void setPictures(ArrayList<String> pictures) { this.pictures = pictures; }
+    public ArrayList<ItemImage> getPictures() { return pictures; }
+    public void setPictures(ArrayList<ItemImage> pictures) { this.pictures = pictures; }
 
     public ArrayList<String> getTechnicalDetails() { return technicalDetails; }
     public void setTechnicalDetails(ArrayList<String> technicalDetails) { this.technicalDetails = technicalDetails; }
@@ -64,9 +64,13 @@ public class Item implements Parcelable {
         this.lastUpdate = dateFormat.format(currentTime);
     }
 
+    public Item() {
+        ;
+    }
+
     public Item(long id, String webId, String name, String brand, int year,
                 ArrayList<Integer> timeFrame, ArrayList<String> categories, String desc,
-                ArrayList<String> pictures, ArrayList<String> technicalDetails, String lastUpdate)
+                ArrayList<ItemImage> pictures, ArrayList<String> technicalDetails, String lastUpdate)
     {
         this.id = id;
         this.name = name;
@@ -101,7 +105,7 @@ public class Item implements Parcelable {
         dest.writeList(timeFrame);
         dest.writeList(categories);
         dest.writeString(desc);
-        dest.writeList(pictures);
+//        dest.writeTypedList(pictures);
         dest.writeList(technicalDetails);
         dest.writeString(lastUpdate);
     }
@@ -130,7 +134,7 @@ public class Item implements Parcelable {
         this.timeFrame = in.readArrayList(Integer.class.getClassLoader());
         this.categories = in.readArrayList(String.class.getClassLoader());
         this.desc = in.readString();
-        this.pictures = in.readArrayList(String.class.getClassLoader());
+//        in.readTypedList(this.pictures, ItemImage.CREATOR);
         this.technicalDetails = in.readArrayList(String.class.getClassLoader());
         this.lastUpdate = in.readString();
     }

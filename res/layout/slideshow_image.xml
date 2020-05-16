@@ -16,10 +16,11 @@
         android:id="@+id/slideshow_image_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="CECI EST UNE PHOTO"
+        android:background="#000"
+        android:textColor="#FFF"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

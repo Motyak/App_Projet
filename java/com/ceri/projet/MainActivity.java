@@ -1,6 +1,7 @@
 package com.ceri.projet;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,10 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
         this.button = findViewById(R.id.button);
 
+        this.dbHelper.populate();   //only one example
+
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Item> items = new ArrayList<>(MainActivity.this.dbHelper.getAllItems());
                 Intent intent = new Intent(MainActivity.this, ItemActivity.class);
+                intent.putExtra(Item.TAG, items.get(0));
                 startActivity(intent);
             }
         });

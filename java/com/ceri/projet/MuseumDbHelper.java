@@ -9,8 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.google.gson.Gson;    //implementation 'com.google.code.gson:gson:2.8.6'
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
@@ -46,6 +53,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        Log.d(TAG, "onCreate: called");
         final String SQL_CREATE_BOOK_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_WEB_ID + " TEXT NOT NULL, " +
@@ -85,7 +93,9 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TIME_FRAME, gson.toJson(item.getTimeFrame()));
         values.put(COLUMN_CATEGORIES, gson.toJson(item.getCategories()));
         values.put(COLUMN_DESCRIPTION, item.getDesc());
-        values.put(COLUMN_PICTURES, gson.toJson(item.getPictures()));
+
+        values.put(COLUMN_PICTURES, gson.toJson(item.getPictures()));///
+
         values.put(COLUMN_TECHNICAL_DETAILS, gson.toJson(item.getTechnicalDetails()));
         values.put(COLUMN_LAST_UPDATE, item.getLastUpdate());
         return values;
@@ -160,23 +170,29 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-//    public void populate() {
-//        Log.d(TAG, "call populate()");
-//        addTeam(new Item("RC Toulonnais", "Top 14"));
-//        addTeam(new Item("ASM Clermont Auvergne", "Top 14"));
-//        addTeam(new Item("Stade Rochelais", "Top 14"));
-//        addTeam(new Item("Bath Rugby","Rugby Union Premiership"));
-//        addTeam(new Item("Edinburgh","Pro14"));
-//        addTeam(new Item("Stade Toulousain", "Top 14"));
-//        addTeam(new Item("Wasps","Rugby Union Premiership"));
-//        addTeam(new Item("Bristol Rugby","Rugby Union Premiership"));
-//        addTeam(new Item("CA Brive","Pro14"));
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        long numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_NAME, null);
-//        Log.d(TAG, "nb of rows="+numRows);
-//        db.close();
-//    }
+    public void populate() {
+        Log.d(TAG, "call populate()");
+
+        ItemImage itemImage = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+        Item item = new Item();
+        item.setWebId("poupou");
+        item.setName("Lecteur de cartouches amovibles 88 Mio");
+        item.setBrand("SyQuest Technology");
+        item.setYear(1991);
+        item.setTimeFrame(new ArrayList<Integer>(Arrays.asList(1990)));
+        item.setDesc("Les cartouches SyQuest dans leurs versions 44 et 88 Mo constituaient la solution la plus répandue (en particulier dans le monde Macintosh) pour les échanges de données volumineuses. Elles étaient très utilisées dans les domaines de la publication assistée par ordinateur et du multimédia.\nLes cartouches contenaient les plateaux de disques durs, les têtes de lecture/écriture étant dans le lecteur.");
+        item.setCategories(new ArrayList<String>(Arrays.asList("périphérique", "support de stockage", "SCSI", "some stuff")));
+        item.setTechnicalDetails(new ArrayList<String>(Arrays.asList("Cartouches à disque dur, format 5¼ pouces", "Capacité de 88 Mo par cartouche", "Connexion SCSI")));
+        item.setLastUpdate();
+        item.setPictures(new ArrayList<ItemImage>(Arrays.asList(itemImage)));
+
+        this.addItem(item);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        long numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_NAME, null);
+        Log.d(TAG, "nb of rows="+numRows);
+        db.close();
+    }
 
     public Item cursorToItem(Cursor cursor) {
 
@@ -184,7 +200,12 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         Gson gson = new Gson();
         ArrayList<Integer> timeFrames = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_TIME_FRAME)), ArrayList.class);
         ArrayList<String> categories = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORIES)), ArrayList.class);
-        ArrayList<String> pictures = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_PICTURES)), ArrayList.class);
+
+
+        Type listType = new TypeToken<ArrayList<ItemImage>>(){}.getType();
+        ArrayList<ItemImage> pictures = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_PICTURES)), listType);///
+
+
         ArrayList<String> technicalDetails = gson.fromJson(cursor.getString(cursor.getColumnIndex(COLUMN_TECHNICAL_DETAILS)), ArrayList.class);
 
         Item item = new Item(cursor.getLong(cursor.getColumnIndex(_ID)),
