@@ -69,7 +69,10 @@ public class Item implements Parcelable {
     }
 
     public Item() {
-        ;
+        this.timeFrame = new ArrayList<>();
+        this.categories = new ArrayList<>();
+        this.pictures = new ArrayList<>();
+        this.technicalDetails = new ArrayList<>();
     }
 
     public Item(long id, String webId, String name, String thumbnail, String brand, int year,

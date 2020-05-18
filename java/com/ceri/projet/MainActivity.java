@@ -76,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Object[] objects) {
             try {
-                ApiComBny.getAllItems();
+                Item item = new Item();
+                item.setWebId("hsv");
+                ApiComBny.updateItem(item);
             } catch (IOException e) { e.printStackTrace(); }
 
             return null;

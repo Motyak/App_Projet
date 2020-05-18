@@ -1,11 +1,10 @@
 package com.ceri.projet;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import Mk.HttpCon;
 
@@ -17,25 +16,28 @@ public class ApiComBny {
         String res = HttpCon.request(HttpCon.Type.GET, searchItemUrl.toString(), null, null);
         InputStream is = new ByteArrayInputStream(res.getBytes("UTF-8"));
 
-        System.out.println(res);    //debug
 
-//        JSONResponseHandlerItem jsonItem = new JSONResponseHandlerItem(item);
-//        jsonItem.readJsonStream(is);
-//
-//        item = jsonItem.getItem();
+        JSONResponseHandlerItem jsonItem = new JSONResponseHandlerItem(item);
+        jsonItem.readJsonStream(is);
+        item = jsonItem.getItem();
 
 //        si ca s'est mal passé retourner false
+
+        //debug
+        System.out.println(item);
+        ArrayList<ItemImage> l = item.getPictures();
+        for(ItemImage itemImage : l)
+            System.out.println(itemImage.getDescription() + "  ;  " + itemImage.getImageUrl());
 
 
         return true;
     }
 
-    public static boolean getAllItems() throws IOException {
+    public static boolean fetchAllItems() throws IOException {
         URL searchCatalogUrl = WebServiceUrl.buildSearchCatalog();
         String res = HttpCon.request(HttpCon.Type.GET, searchCatalogUrl.toString(), null, null);
         InputStream is = new ByteArrayInputStream(res.getBytes("UTF-8"));
 
-        System.out.println(res);    //debug
 
 //        JSONResponseHandlerCatalog jsonCatalog = new JSONResponseHandlerCatalog(catalog);
 //        jsonCatalog.readJsonStream(is);
