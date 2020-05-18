@@ -31,7 +31,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "museum.db";
 
-    public static final String TABLE_NAME = "museum";
+    public static final String TABLE_NAME = "catalog";
 
     public static final String _ID = "_id";
     public static final String COLUMN_WEB_ID = "web_id";
@@ -164,6 +164,18 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         c.close();
 
         return res;
+    }
+
+    public void synchronize(ArrayList<Item> catalog) {
+        this.deleteAllItems();
+        for(Item item : catalog)
+            this.addItem(item);
+    }
+
+    private void deleteAllItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_NAME);
+        db.close();
     }
 
     public void deleteItem(int id) {

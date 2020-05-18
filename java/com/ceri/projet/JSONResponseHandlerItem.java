@@ -6,8 +6,8 @@ import android.util.JsonToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Process the response to a GET request to the Web service
@@ -28,6 +28,9 @@ public class JSONResponseHandlerItem {
     public JSONResponseHandlerItem(Item item) {
         this.item = item;
         this.item.clearAllLists();
+        try {
+            this.item.setThumbnail(WebServiceUrl.buildSearchThumbnail(this.item.getWebId()).toString());
+        } catch (MalformedURLException e) { e.printStackTrace(); }
         this.item.setLastUpdate();
     }
 
@@ -51,16 +54,16 @@ public class JSONResponseHandlerItem {
         reader.beginObject();
         while (reader.hasNext()) {
             String name = reader.nextName();
-            if(name.equals("categories")) {
+            if(name.equals("categories") && reader.peek() != JsonToken.NULL) {
                 readStringArray(reader, this.item.getCategories());
             }
-            else if(name.equals("technicalDetails")) {
+            else if(name.equals("technicalDetails") && reader.peek() != JsonToken.NULL) {
                 readStringArray(reader, this.item.getTechnicalDetails());
             }
-            else if(name.equals("timeFrame")) {
+            else if(name.equals("timeFrame") && reader.peek() != JsonToken.NULL) {
                 readIntArray(reader, this.item.getTimeFrame());
             }
-            else if(name.equals("pictures")) {
+            else if(name.equals("pictures") && reader.peek() != JsonToken.NULL) {
                 readImages(reader, this.item.getPictures());
             }
             else {
@@ -68,6 +71,9 @@ public class JSONResponseHandlerItem {
             }
         }
         reader.endObject();
+
+        if(this.item.getYear() == Item.NULL_YEAR && this.item.getTimeFrame().size() > 0)
+            this.item.setYear(this.item.getTimeFrame().get(0));
     }
 
 
@@ -103,16 +109,31 @@ public class JSONResponseHandlerItem {
 
     private void readValue(JsonReader reader, String name) throws IOException {
         if(name.equals("description")) {
-            this.item.setDesc(reader.nextString());
+            if(reader.peek() == JsonToken.NULL) {
+                this.item.setDesc("");
+                reader.nextNull();
+            }
+            else
+                this.item.setDesc(reader.nextString());
         }
         else if(name.equals("brand")) {
-            this.item.setBrand(reader.nextString());
+            if(reader.peek() == JsonToken.NULL) {
+                this.item.setBrand("");
+                reader.nextNull();
+            }
+            else
+                this.item.setBrand(reader.nextString());
         }
-        else if(name.equals("name")) {
+        else if(name.equals("name") && reader.peek() != JsonToken.NULL) {
             this.item.setName(reader.nextString());
         }
         else if(name.equals("year")) {
-            this.item.setYear(reader.nextInt());
+            if(reader.peek() == JsonToken.NULL) {
+                this.item.setYear(9999);
+                reader.nextNull();
+            }
+            else
+                this.item.setYear(reader.nextInt());
         }
         else {
             reader.skipValue();

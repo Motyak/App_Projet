@@ -59,7 +59,10 @@ public class ItemActivity extends AppCompatActivity {
     private void updateView() {
         this.txtName.setText(this.item.getName());
         this.txtBrand.setText(this.item.getBrand());
-        this.txtYear.setText(String.valueOf(this.item.getYear()));
+        if(this.item.getYear() == Item.NULL_YEAR)
+            this.txtYear.setText("");
+        else
+            this.txtYear.setText(String.valueOf(this.item.getYear()));
         String categories = "";
         int i = 0;
         for( ; i < this.item.getCategories().size() - 1 ; ++i)
@@ -80,7 +83,7 @@ public class ItemActivity extends AppCompatActivity {
         this.txtLastUpdate.setText(lastUpdate);
 
         Glide.with(this)
-                .load("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail")
+                .load(this.item.getThumbnail())
                 .centerCrop()
                 .into(this.ivThumbnail);
     }

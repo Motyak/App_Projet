@@ -71,9 +71,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Object[] objects) {
             try {
-                Item item = MainActivity.this.dbHelper.getAllItems().get(0);
-                ApiComBny.updateItem(item);
-                MainActivity.this.dbHelper.updateItem(item);
+//                Item item = MainActivity.this.dbHelper.getAllItems().get(0);
+//                ApiComBny.updateItem(item);
+//                MainActivity.this.dbHelper.updateItem(item);
+
+                ArrayList<Item> catalog = ApiComBny.fetchAllItems();
+                MainActivity.this.dbHelper.synchronize(catalog);
+
             } catch (IOException e) { e.printStackTrace(); }
 
             return null;

@@ -13,6 +13,7 @@ import java.util.Calendar;
 public class Item implements Parcelable {
 
     public static final String TAG = Item.class.getSimpleName();
+    public static final int NULL_YEAR = 9999;
 
     private long id; // used for the _id column of the db helper
 
@@ -76,10 +77,33 @@ public class Item implements Parcelable {
     }
 
     public Item() {
+        this.webId = new String("");
+        this.name = new String("");
+        this.thumbnail = new String("");
+        this.brand = new String("");
+        this.desc = new String("");
+        this.lastUpdate = new String("");
+        this.year = 9999;
+
         this.timeFrame = new ArrayList<>();
         this.categories = new ArrayList<>();
         this.pictures = new ArrayList<>();
         this.technicalDetails = new ArrayList<>();
+    }
+
+    public Item(Item item) {
+        this.id = item.id;
+        this.webId = new String(item.webId);
+        this.name = new String(item.name);
+        this.thumbnail = new String(item.thumbnail);
+        this.brand = new String(item.brand);
+        this.year = item.year;
+        this.timeFrame = new ArrayList<>(item.timeFrame);
+        this.categories = new ArrayList<>(item.categories);
+        this.desc = new String(item.desc);
+        this.pictures = new ArrayList<>(item.pictures);
+        this.technicalDetails = new ArrayList<>(item.technicalDetails);
+        this.lastUpdate = new String(item.lastUpdate);
     }
 
     public Item(long id, String webId, String name, String thumbnail, String brand, int year,
@@ -102,7 +126,7 @@ public class Item implements Parcelable {
 
     @Override
     public String toString() {
-        return this.name+", "+this.brand +" ("+this.year +")";
+        return this.name+", "+this.brand +" ("+this.year +")\t#" + this.webId;
     }
 
     @Override

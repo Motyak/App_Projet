@@ -43,7 +43,7 @@ public class WebServiceUrl {
         return url;
     }
 
-    // Get a photo from item id and image name
+    // Get a photo from item web id and image name
     // https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/images/IMG_1683
     private static final String SEARCH_IMAGE = "images";
 
@@ -54,6 +54,20 @@ public class WebServiceUrl {
                 .appendPath(itemWebId)
                 .appendPath(SEARCH_IMAGE)
                 .appendPath(imageName);
+        URL url = new URL(builder.build().toString());
+        return url;
+    }
+
+    // Get a thumbnail from item web id
+    // https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail
+    private static final String SEARCH_THUMBNAIL = "thumbnail";
+
+    // Build URL to get a specific image from an item
+    public static URL buildSearchThumbnail(String itemWebId) throws MalformedURLException {
+        Uri.Builder builder = commonBuilder();
+        builder.appendPath(SEARCH_ITEM)
+                .appendPath(itemWebId)
+                .appendPath(SEARCH_THUMBNAIL);
         URL url = new URL(builder.build().toString());
         return url;
     }

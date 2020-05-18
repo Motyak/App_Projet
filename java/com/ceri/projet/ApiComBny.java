@@ -27,21 +27,16 @@ public class ApiComBny {
         return true;
     }
 
-    public static boolean fetchAllItems() throws IOException {
+//    synchroniser la bdd locale avec le catalogue de l'API web
+    public static ArrayList<Item> fetchAllItems() throws IOException {
         URL searchCatalogUrl = WebServiceUrl.buildSearchCatalog();
         String res = HttpCon.request(HttpCon.Type.GET, searchCatalogUrl.toString(), null, null);
         InputStream is = new ByteArrayInputStream(res.getBytes("UTF-8"));
 
 
-//        JSONResponseHandlerCatalog jsonCatalog = new JSONResponseHandlerCatalog(catalog);
-//        jsonCatalog.readJsonStream(is);
-//
-//        catalog = jsonCatalog.getItems();
-
-//        si ca s'est mal passé retourner false
-
-
-        return true;
+        JSONResponseHandlerCatalog jsonCatalog = new JSONResponseHandlerCatalog();
+        jsonCatalog.readJsonStream(is);
+        return jsonCatalog.getItems();
     }
 
 }
