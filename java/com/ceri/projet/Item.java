@@ -68,6 +68,13 @@ public class Item implements Parcelable {
         this.lastUpdate = dateFormat.format(currentTime);
     }
 
+    public void clearAllLists() {
+        this.timeFrame.clear();
+        this.technicalDetails.clear();
+        this.pictures.clear();
+        this.categories.clear();
+    }
+
     public Item() {
         this.timeFrame = new ArrayList<>();
         this.categories = new ArrayList<>();

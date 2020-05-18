@@ -33,11 +33,6 @@ public class MainActivity extends AppCompatActivity {
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ArrayList<Item> items = new ArrayList<>(MainActivity.this.dbHelper.getAllItems());
-//                Intent intent = new Intent(MainActivity.this, ItemActivity.class);
-//                intent.putExtra(Item.TAG, items.get(0));
-//                startActivity(intent);
-
                 new UpdateAllItemsTask().execute();
             }
         });
@@ -76,12 +71,22 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Object[] objects) {
             try {
-                Item item = new Item();
-                item.setWebId("hsv");
+                Item item = MainActivity.this.dbHelper.getAllItems().get(0);
                 ApiComBny.updateItem(item);
+                MainActivity.this.dbHelper.updateItem(item);
             } catch (IOException e) { e.printStackTrace(); }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            ArrayList<Item> items = new ArrayList<>(MainActivity.this.dbHelper.getAllItems());
+            Intent intent = new Intent(MainActivity.this, ItemActivity.class);
+            intent.putExtra(Item.TAG, items.get(0));
+            startActivity(intent);
         }
     }
 }

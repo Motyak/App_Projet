@@ -27,6 +27,8 @@ public class JSONResponseHandlerItem {
 //    On suppose que l'item qui est passé possède un web id
     public JSONResponseHandlerItem(Item item) {
         this.item = item;
+        this.item.clearAllLists();
+        this.item.setLastUpdate();
     }
 
     public Item getItem() { return this.item; }

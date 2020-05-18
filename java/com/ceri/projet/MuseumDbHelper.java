@@ -179,7 +179,7 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         ItemImage itemImage1 = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
         ItemImage itemImage2 = new ItemImage("DESCRIPTION", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
         Item item = new Item();
-        item.setWebId("poupou");
+        item.setWebId("hsv");
         item.setName("Lecteur de cartouches amovibles 88 Mio");
         item.setThumbnail("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
         item.setBrand("SyQuest Technology");

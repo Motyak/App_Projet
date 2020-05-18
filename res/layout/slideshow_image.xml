@@ -17,8 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:text="CECI EST UNE PHOTO"
-        android:background="#000"
+        android:background="#8000"
         android:textColor="#FFF"
         android:textSize="15sp"
         app:layout_constraintTop_toTopOf="parent" />

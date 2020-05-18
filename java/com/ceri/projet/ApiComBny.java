@@ -23,12 +23,6 @@ public class ApiComBny {
 
 //        si ca s'est mal passé retourner false
 
-        //debug
-        System.out.println(item);
-        ArrayList<ItemImage> l = item.getPictures();
-        for(ItemImage itemImage : l)
-            System.out.println(itemImage.getDescription() + "  ;  " + itemImage.getImageUrl());
-
 
         return true;
     }
