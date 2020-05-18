@@ -7,8 +7,6 @@
 //import java.io.InputStream;
 //import java.io.InputStreamReader;
 //
-////import fr.uavignon.shuet.tp3.data.Team;
-//
 ///**
 // * Process the response to a GET request to the Web service
 // * https://www.thesportsdb.com/api/v1/json/1/searchteams.php?t=R
@@ -17,14 +15,14 @@
 // */
 //
 //
-//public class JSONResponseHandlerTeam {
+//public class JSONResponseHandlerItem {
 //
-//    private static final String TAG = JSONResponseHandlerTeam.class.getSimpleName();
+//    private static final String TAG = JSONResponseHandlerItem.class.getSimpleName();
 //
 //    private Item item;
 //
 //
-//    public JSONResponseHandlerTeam(Item item) {
+//    public JSONResponseHandlerItem(Item item) {
 //        this.item = item;
 //    }
 //

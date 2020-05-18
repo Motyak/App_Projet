@@ -2,6 +2,7 @@ package com.ceri.projet;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -31,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Item> items = new ArrayList<>(MainActivity.this.dbHelper.getAllItems());
-                Intent intent = new Intent(MainActivity.this, ItemActivity.class);
-                intent.putExtra(Item.TAG, items.get(0));
-                startActivity(intent);
+//                ArrayList<Item> items = new ArrayList<>(MainActivity.this.dbHelper.getAllItems());
+//                Intent intent = new Intent(MainActivity.this, ItemActivity.class);
+//                intent.putExtra(Item.TAG, items.get(0));
+//                startActivity(intent);
+
+                new UpdateAllItemsTask().execute();
             }
         });
 
@@ -65,5 +69,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class UpdateAllItemsTask extends AsyncTask {
+
+        @Override
+        protected Void doInBackground(Object[] objects) {
+            try {
+                ApiComBny.getAllItems();
+            } catch (IOException e) { e.printStackTrace(); }
+
+            return null;
+        }
     }
 }
