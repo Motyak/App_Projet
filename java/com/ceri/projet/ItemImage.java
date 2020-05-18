@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ItemImage implements Parcelable {
+    public static final String NO_PICTURES_IMAGE = "https://i.imgur.com/sxH2K8c.jpg";
+    public static final String NO_PICTURES_DESC = "Aucune photo n'est disponible.";
+
     private String description;
     private String imageUrl;
 

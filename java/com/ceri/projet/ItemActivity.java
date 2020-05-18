@@ -76,8 +76,13 @@ public class ItemActivity extends AppCompatActivity {
         details += "-" + this.item.getTechnicalDetails().get(i);
         this.txtDetails.setText(details);
 
+        if(this.item.getPictures().isEmpty())
+            this.item.getPictures().add(new ItemImage(ItemImage.NO_PICTURES_DESC, ItemImage.NO_PICTURES_IMAGE));
+
         for(ItemImage image : this.item.getPictures())
             this.adapter.addItem(image);
+
+
 
         String lastUpdate = "Dernière mise à jour : " + this.item.getLastUpdate();
         this.txtLastUpdate.setText(lastUpdate);
