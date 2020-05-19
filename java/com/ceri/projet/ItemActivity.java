@@ -59,30 +59,35 @@ public class ItemActivity extends AppCompatActivity {
     private void updateView() {
         this.txtName.setText(this.item.getName());
         this.txtBrand.setText(this.item.getBrand());
+        this.txtDesc.setText(this.item.getDesc());
+
         if(this.item.getYear() == Item.NULL_YEAR)
             this.txtYear.setText("");
         else
             this.txtYear.setText(String.valueOf(this.item.getYear()));
+
         String categories = "";
-        int i = 0;
-        for( ; i < this.item.getCategories().size() - 1 ; ++i)
-            categories += this.item.getCategories().get(i) + ", ";
-        categories += this.item.getCategories().get(i);
+        if(!this.item.getCategories().isEmpty()) {
+            int i = 0;
+            for( ; i < this.item.getCategories().size() - 1 ; ++i)
+                categories += this.item.getCategories().get(i) + ", ";
+            categories += this.item.getCategories().get(i);
+        }
         this.txtCategories.setText(categories);
-        this.txtDesc.setText(this.item.getDesc());
+
         String details = "Détails techniques : \n";
-        for(i = 0 ; i < this.item.getTechnicalDetails().size() - 1 ; ++i)
-            details += "-" + this.item.getTechnicalDetails().get(i) + "\n";
-        details += "-" + this.item.getTechnicalDetails().get(i);
+        if(!this.item.getTechnicalDetails().isEmpty()) {
+            int i = 0;
+            for(i = 0 ; i < this.item.getTechnicalDetails().size() - 1 ; ++i)
+                details += "-" + this.item.getTechnicalDetails().get(i) + "\n";
+            details += "-" + this.item.getTechnicalDetails().get(i);
+        }
         this.txtDetails.setText(details);
 
         if(this.item.getPictures().isEmpty())
             this.item.getPictures().add(new ItemImage(ItemImage.NO_PICTURES_DESC, ItemImage.NO_PICTURES_IMAGE));
-
         for(ItemImage image : this.item.getPictures())
             this.adapter.addItem(image);
-
-
 
         String lastUpdate = "Dernière mise à jour : " + this.item.getLastUpdate();
         this.txtLastUpdate.setText(lastUpdate);
