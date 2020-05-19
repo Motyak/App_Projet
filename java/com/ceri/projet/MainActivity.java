@@ -1,13 +1,9 @@
 package com.ceri.projet;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,10 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
         this.adapter = new RecyclerViewAdapter(this, this.dbHelper.getAllItems());
 
+
+
+        List<SimpleSectionedRecyclerViewAdapter.Section> sections =
+                new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0,"Section 1"));
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(5,"Section 2"));
+        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
+                SimpleSectionedRecyclerViewAdapter(this,R.layout.section,R.id.section_text,this.adapter);
+        mSectionedAdapter.setSections(sections.toArray(dummy));
+
+
+
         this.rvItems = findViewById(R.id.rvItems);
-        this.rvItems.setAdapter(this.adapter);
         this.rvItems.setLayoutManager(new LinearLayoutManager(this));
         this.rvItems.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+//        this.rvItems.setAdapter(this.adapter);
+        this.rvItems.setAdapter(mSectionedAdapter);
 
         this.refresh = findViewById(R.id.refresh);
         this.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -74,9 +84,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.sortAlphabetically)
+            this.adapter.sortItemsAlphabetically();
+        else if(id == R.id.sortChronologically)
+            this.adapter.sortItemsChronologically();
+        else if(id == R.id.sortByCategories)
+            ;
+
+        this.adapter.notifyItemRangeChanged(0, MainActivity.this.adapter.catalog.size());
 
         return super.onOptionsItemSelected(item);
     }
