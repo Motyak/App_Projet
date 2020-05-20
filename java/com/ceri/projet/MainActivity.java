@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private SimpleSectionedRecyclerViewAdapter adapter;
     private RecyclerView rvItems;
 
+    private Tri tri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         registerForContextMenu(findViewById(R.id.rvItems));
+
+        this.tri = Tri.ALPHA;
 
         this.simpleAdapter = new RecyclerViewAdapter(this, this.dbHelper.getAllItems());
         this.adapter = AdapterCreator.createAdapterAlpha(this, this.simpleAdapter.catalog);
@@ -73,10 +77,12 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.sortAlphabetically) {
             this.adapter = AdapterCreator.createAdapterAlpha(this, this.simpleAdapter.catalog);
             this.rvItems.setAdapter(this.adapter);
+            this.tri = Tri.ALPHA;
         }
         else if(id == R.id.sortChronologically) {
             this.adapter = AdapterCreator.createAdapterChrono(this, this.simpleAdapter.catalog);
             this.rvItems.setAdapter(this.adapter);
+            this.tri = Tri.CHRONO;
         }
         else if(id == R.id.sortByCategories)
             ;
@@ -94,8 +100,15 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Item> catalog = ApiComBny.fetchAllItems();
                 MainActivity.this.dbHelper.synchronize(catalog);
                 MainActivity.this.simpleAdapter.catalog = catalog;
-                MainActivity.this.adapter = AdapterCreator.createAdapterAlpha(
-                        MainActivity.this, MainActivity.this.simpleAdapter.catalog);
+                if(MainActivity.this.tri == Tri.ALPHA) {
+                    MainActivity.this.adapter = AdapterCreator.createAdapterAlpha(
+                            MainActivity.this, MainActivity.this.simpleAdapter.catalog);
+                }
+                else if(MainActivity.this.tri == Tri.CHRONO) {
+                    MainActivity.this.adapter = AdapterCreator.createAdapterChrono(
+                            MainActivity.this, MainActivity.this.simpleAdapter.catalog);
+                }
+
             } catch (IOException e) { e.printStackTrace(); }
 
             return null;
