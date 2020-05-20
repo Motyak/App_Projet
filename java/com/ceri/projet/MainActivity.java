@@ -74,8 +74,10 @@ public class MainActivity extends AppCompatActivity {
             this.adapter = AdapterCreator.createAdapterAlpha(this, this.simpleAdapter.catalog);
             this.rvItems.setAdapter(this.adapter);
         }
-        else if(id == R.id.sortChronologically)
-            this.simpleAdapter.sortItemsChronologically();
+        else if(id == R.id.sortChronologically) {
+            this.adapter = AdapterCreator.createAdapterChrono(this, this.simpleAdapter.catalog);
+            this.rvItems.setAdapter(this.adapter);
+        }
         else if(id == R.id.sortByCategories)
             ;
 

@@ -11,6 +11,34 @@ import static com.ceri.projet.SimpleSectionedRecyclerViewAdapter.*; //Section
 
 public class AdapterCreator {
 
+    public static SimpleSectionedRecyclerViewAdapter createAdapterChrono(Context context, List<Item> catalog) {
+        //    créer un adapter avec les données
+        RecyclerViewAdapter sectionlessAdapter = new RecyclerViewAdapter(context, catalog);
+        sectionlessAdapter.sortItemsChronologically();
+
+        //    créer les sections
+        List<Section> sections = AdapterCreator.createSectionsChrono(sectionlessAdapter.catalog);
+
+
+        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+        SimpleSectionedRecyclerViewAdapter adapter = new SimpleSectionedRecyclerViewAdapter(context,R.layout.section,R.id.section_text,sectionlessAdapter);
+        adapter.setSections(sections.toArray(dummy));
+        return adapter;
+    }
+
+    private static List<Section> createSectionsChrono(List<Item> sortedCatalog) {
+        List<Section> sections = new ArrayList<Section>();
+        List<Integer> cache = new ArrayList<Integer>();
+        for(Item item : sortedCatalog) {
+            Integer year = item.getYear();
+            if(!cache.contains(year)) {
+                sections.add(new Section(sortedCatalog.indexOf(item), String.valueOf(year)));
+                cache.add(year);
+            }
+        }
+        return sections;
+    }
+
     public static SimpleSectionedRecyclerViewAdapter createAdapterAlpha(Context context, List<Item> catalog) {
 
     //    créer un adapter avec les données
