@@ -14,7 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     final private MuseumDbHelper dbHelper = new MuseumDbHelper(this);
 
     private SwipeRefreshLayout refresh;
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter simpleAdapter;
+    private SimpleSectionedRecyclerViewAdapter adapter;
     private RecyclerView rvItems;
 
     @Override
@@ -33,33 +33,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         registerForContextMenu(findViewById(R.id.rvItems));
 
-        this.adapter = new RecyclerViewAdapter(this, this.dbHelper.getAllItems());
-
-
-
-        List<SimpleSectionedRecyclerViewAdapter.Section> sections =
-                new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0,"Section 1"));
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(5,"Section 2"));
-        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
-        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
-                SimpleSectionedRecyclerViewAdapter(this,R.layout.section,R.id.section_text,this.adapter);
-        mSectionedAdapter.setSections(sections.toArray(dummy));
-
-
+        this.simpleAdapter = new RecyclerViewAdapter(this, this.dbHelper.getAllItems());
+        this.adapter = AdapterCreator.createAdapterAlpha(this, this.simpleAdapter.catalog);
 
         this.rvItems = findViewById(R.id.rvItems);
         this.rvItems.setLayoutManager(new LinearLayoutManager(this));
         this.rvItems.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-//        this.rvItems.setAdapter(this.adapter);
-        this.rvItems.setAdapter(mSectionedAdapter);
+        this.rvItems.setAdapter(this.adapter);
 
         this.refresh = findViewById(R.id.refresh);
         this.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 new UpdateAllItemsTask().execute();
-                MainActivity.this.adapter.notifyItemRangeChanged(0, MainActivity.this.adapter.catalog.size());
             }
         });
     }
@@ -84,14 +70,16 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.sortAlphabetically)
-            this.adapter.sortItemsAlphabetically();
+        if (id == R.id.sortAlphabetically) {
+            this.adapter = AdapterCreator.createAdapterAlpha(this, this.simpleAdapter.catalog);
+            this.rvItems.setAdapter(this.adapter);
+        }
         else if(id == R.id.sortChronologically)
-            this.adapter.sortItemsChronologically();
+            this.simpleAdapter.sortItemsChronologically();
         else if(id == R.id.sortByCategories)
             ;
 
-        this.adapter.notifyItemRangeChanged(0, MainActivity.this.adapter.catalog.size());
+        this.adapter.notifyItemRangeChanged(0, this.adapter.getItemCount());
 
         return super.onOptionsItemSelected(item);
     }
@@ -103,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 ArrayList<Item> catalog = ApiComBny.fetchAllItems();
                 MainActivity.this.dbHelper.synchronize(catalog);
-                MainActivity.this.adapter.catalog = catalog;
-                MainActivity.this.adapter.sortItemsAlphabetically();
-//                MainActivity.this.adapter.sortItemsChronologically();
+                MainActivity.this.simpleAdapter.catalog = catalog;
+                MainActivity.this.adapter = AdapterCreator.createAdapterAlpha(
+                        MainActivity.this, MainActivity.this.simpleAdapter.catalog);
             } catch (IOException e) { e.printStackTrace(); }
 
             return null;
@@ -116,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(o);
 
             MainActivity.this.refresh.setRefreshing(false);
+            MainActivity.this.rvItems.setAdapter(MainActivity.this.adapter);
             MainActivity.this.adapter.notifyDataSetChanged();
         }
     }
