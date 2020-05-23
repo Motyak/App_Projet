@@ -7,18 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+
 
 
 public class ItemActivity extends AppCompatActivity {
@@ -92,9 +84,6 @@ public class ItemActivity extends AppCompatActivity {
         String lastUpdate = "Dernière mise à jour : " + this.item.getLastUpdate();
         this.txtLastUpdate.setText(lastUpdate);
 
-        Glide.with(this)
-                .load(this.item.getThumbnail())
-                .centerCrop()
-                .into(this.ivThumbnail);
+        GlideBny.loadFromWeb(this, this.item.getThumbnail(), this.ivThumbnail, GlideBny.Center.CROP);
     }
 }

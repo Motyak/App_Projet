@@ -112,7 +112,7 @@
                 app:sliderIndicatorPadding="3dp"
                 app:sliderIndicatorRadius="2dp"
                 app:sliderIndicatorSelectedColor="#5A5A5A"
-                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderIndicatorUnselectedColor="#D2E6F1"
                 app:sliderScrollTimeInSec="1"
                 app:sliderStartAutoCycle="true" />
 

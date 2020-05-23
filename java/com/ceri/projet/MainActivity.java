@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 new UpdateAllItemsTask().execute();
             }
         });
+
+//        cache default image in case no picture found
+        GlideBny.saveInCache(this, ItemImage.NO_PICTURES_IMAGE);
     }
 
     @Override
@@ -92,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void cacheCatalogImages() {
+        new CacheCatalogImagesTask().execute();
+    }
+
     class UpdateAllItemsTask extends AsyncTask {
 
         @Override
@@ -100,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Item> catalog = ApiComBny.fetchAllItems();
                 MainActivity.this.dbHelper.synchronize(catalog);
                 MainActivity.this.simpleAdapter.catalog = catalog;
+
                 if(MainActivity.this.tri == Tri.ALPHA) {
                     MainActivity.this.adapter = AdapterCreator.createAdapterAlpha(
                             MainActivity.this, MainActivity.this.simpleAdapter.catalog);
@@ -118,9 +127,35 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
 
+            MainActivity.this.cacheCatalogImages();
+
             MainActivity.this.refresh.setRefreshing(false);
             MainActivity.this.rvItems.setAdapter(MainActivity.this.adapter);
             MainActivity.this.adapter.notifyDataSetChanged();
+        }
+    }
+
+    class CacheCatalogImagesTask extends AsyncTask {
+
+        @Override
+        protected Void doInBackground(Object[] objects) {
+
+            System.out.println("Début remplissage cache");
+
+            List<Item> catalog = MainActivity.this.dbHelper.getAllItems();
+            for (Item item : catalog) {
+                GlideBny.saveInCache(MainActivity.this, item.getThumbnail());
+                for (ItemImage image : item.getPictures())
+                    GlideBny.saveInCache(MainActivity.this, image.getImageUrl());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            System.out.println("Cache rempli");
         }
     }
 }

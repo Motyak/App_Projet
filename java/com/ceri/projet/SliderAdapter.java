@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
@@ -53,17 +50,19 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         viewHolder.textViewDescription.setText(sliderItem.getDescription());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
-        Glide.with(viewHolder.itemView)
-                .load(sliderItem.getImageUrl())
-                .fitCenter()
-                .into(viewHolder.imageViewBackground);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        GlideBny.loadFromWeb(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
+//        si pas de connexion internet => charger depuis le cache
+        if(!GlideBny.checkInternet(this.context))
+            GlideBny.loadFromCache(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
+
+
+//        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//            }
+//        });
     }
 
     @Override
