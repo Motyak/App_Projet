@@ -88,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
             this.rvItems.setAdapter(this.adapter);
             this.tri = Tri.CHRONO;
         }
-        else if(id == R.id.sortByCategories)
-            ;
+        else if(id == R.id.sortByCategories) {
+            this.adapter = AdapterCreator.createAdapterCategories(this,
+                    MainActivity.this.dbHelper.getCategories(), this.simpleAdapter.catalog);
+            this.rvItems.setAdapter(this.adapter);
+            this.tri = Tri.CATEGORIES;
+        }
 
         this.adapter.notifyItemRangeChanged(0, this.adapter.getItemCount());
 
@@ -116,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                 else if(MainActivity.this.tri == Tri.CHRONO) {
                     MainActivity.this.adapter = AdapterCreator.createAdapterChrono(
                             MainActivity.this, MainActivity.this.simpleAdapter.catalog);
+                }
+                else if(MainActivity.this.tri == Tri.CATEGORIES) {
+                    MainActivity.this.adapter = AdapterCreator.createAdapterCategories(
+                            MainActivity.this, MainActivity.this.dbHelper.getCategories(),
+                            MainActivity.this.simpleAdapter.catalog);
                 }
 
             } catch (IOException e) { e.printStackTrace(); }

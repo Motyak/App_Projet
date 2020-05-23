@@ -17,8 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
 
@@ -152,6 +156,22 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor fetchItems(String categorie) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null,
+                COLUMN_CATEGORIES, new String[]{categorie}, null, null, COLUMN_NAME +" ASC", null);
+
+        return cursor;
+    }
+
+    public Cursor fetchCategories() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null,
+                null, null, null, null, COLUMN_CATEGORIES +" ASC", null);
+
+        return cursor;
+    }
+
     /**
      * Returns a list on all the items of the data base
      */
@@ -164,6 +184,42 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         c.close();
 
         return res;
+    }
+
+    public List<Item> getItems(String categorie) {
+        List<Item> res = new ArrayList<>();
+        Cursor c = this.fetchItems(categorie);
+        while(c.moveToNext()) {
+            res.add(this.cursorToItem(c));
+        }
+        c.close();
+
+//        List<Item> distinctRes = new ArrayList<>();
+//        distinctRes.addAll(new HashSet<>(res));
+        return res;
+    }
+
+    public List<String> getCategories() {
+        Gson gson = new Gson();
+        List<String> res = new ArrayList<>();
+        Cursor c = this.fetchCategories();
+        while(c.moveToNext()) {
+            ArrayList<String> categories = gson.fromJson(c.getString(c.getColumnIndex(COLUMN_CATEGORIES)), ArrayList.class);
+            for(String str : categories)
+                res.add(str);
+        }
+        c.close();
+
+        List<String> distinctRes = new ArrayList<>();
+        distinctRes.addAll(new HashSet<>(res));
+        Collections.sort(distinctRes, new Comparator<String>() {
+            @Override
+            public int compare(String str1, String str2) {
+                return str1.toLowerCase().compareTo(str2.toLowerCase());
+            }
+        });
+
+        return distinctRes;
     }
 
     public void synchronize(ArrayList<Item> catalog) {
