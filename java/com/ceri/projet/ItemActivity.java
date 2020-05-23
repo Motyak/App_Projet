@@ -84,6 +84,7 @@ public class ItemActivity extends AppCompatActivity {
         String lastUpdate = "Dernière mise à jour : " + this.item.getLastUpdate();
         this.txtLastUpdate.setText(lastUpdate);
 
-        GlideBny.loadFromWeb(this, this.item.getThumbnail(), this.ivThumbnail, GlideBny.Center.CROP);
+//        GlideBny.loadFromWeb(this, this.item.getThumbnail(), this.ivThumbnail, GlideBny.Center.CROP);
+        GlideBny.loadFromCache(this, this.item.getThumbnail(), this.ivThumbnail, GlideBny.Center.CROP);
     }
 }

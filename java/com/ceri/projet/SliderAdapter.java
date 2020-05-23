@@ -51,10 +51,12 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
 
-        GlideBny.loadFromWeb(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
-//        si pas de connexion internet => charger depuis le cache
-        if(!GlideBny.checkInternet(this.context))
-            GlideBny.loadFromCache(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
+        GlideBny.loadFromCache(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
+
+//        GlideBny.loadFromWeb(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
+////        si pas de connexion internet => charger depuis le cache
+//        if(!GlideBny.checkInternet(this.context))
+//            GlideBny.loadFromCache(viewHolder.itemView, sliderItem.getImageUrl(), viewHolder.imageViewBackground, GlideBny.Center.FIT);
 
 
 //        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
