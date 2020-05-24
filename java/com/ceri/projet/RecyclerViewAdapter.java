@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,15 +47,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((ViewHolder) holder).itemYear.setText(String.valueOf(item.getYear()));
         ((ViewHolder)holder).idBdd = item.getId();
 
-        Glide.with(((ViewHolder)holder).itemView)
-                .load(item.getThumbnail())
-                .centerCrop()
-                .into(((ViewHolder)holder).image);
+        GlideBny.loadFromCache(holder.itemView, item.getThumbnail(), ((ViewHolder)holder).image, GlideBny.Center.CROP);
 
         ((ViewHolder) holder).parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Clickec on id " + item.getId() + "  ;  " + item.getName());
+                System.out.println("Clicked on id " + item.getId() + "  ;  " + item.getName());
                 Intent intent = new Intent(v.getContext(), ItemActivity.class);
                 intent.putExtra(Item.TAG, item);
                 v.getContext().startActivity(intent);

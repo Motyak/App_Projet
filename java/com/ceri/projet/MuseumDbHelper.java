@@ -12,17 +12,12 @@ import com.google.gson.Gson;    //implementation 'com.google.code.gson:gson:2.8.
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
 
@@ -156,13 +151,13 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor fetchItems(String categorie) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null,
-                COLUMN_CATEGORIES, new String[]{categorie}, null, null, COLUMN_NAME +" ASC", null);
-
-        return cursor;
-    }
+//    public Cursor fetchItems(String categorie) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.query(TABLE_NAME, null,
+//                COLUMN_CATEGORIES, new String[]{categorie}, null, null, COLUMN_NAME +" ASC", null);
+//
+//        return cursor;
+//    }
 
     public Cursor fetchCategories() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -186,18 +181,18 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public List<Item> getItems(String categorie) {
-        List<Item> res = new ArrayList<>();
-        Cursor c = this.fetchItems(categorie);
-        while(c.moveToNext()) {
-            res.add(this.cursorToItem(c));
-        }
-        c.close();
-
-//        List<Item> distinctRes = new ArrayList<>();
-//        distinctRes.addAll(new HashSet<>(res));
-        return res;
-    }
+//    public List<Item> getItems(String categorie) {
+//        List<Item> res = new ArrayList<>();
+//        Cursor c = this.fetchItems(categorie);
+//        while(c.moveToNext()) {
+//            res.add(this.cursorToItem(c));
+//        }
+//        c.close();
+//
+////        List<Item> distinctRes = new ArrayList<>();
+////        distinctRes.addAll(new HashSet<>(res));
+//        return res;
+//    }
 
     public List<String> getCategories() {
         Gson gson = new Gson();
@@ -241,31 +236,31 @@ public class MuseumDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void populate() {
-        Log.d(TAG, "call populate()");
-
-        ItemImage itemImage1 = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
-        ItemImage itemImage2 = new ItemImage("DESCRIPTION", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
-        Item item = new Item();
-        item.setWebId("hsv");
-        item.setName("Lecteur de cartouches amovibles 88 Mio");
-        item.setThumbnail("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
-        item.setBrand("SyQuest Technology");
-        item.setYear(1991);
-        item.setTimeFrame(new ArrayList<Integer>(Arrays.asList(1990)));
-        item.setDesc("Les cartouches SyQuest dans leurs versions 44 et 88 Mo constituaient la solution la plus répandue (en particulier dans le monde Macintosh) pour les échanges de données volumineuses. Elles étaient très utilisées dans les domaines de la publication assistée par ordinateur et du multimédia.\nLes cartouches contenaient les plateaux de disques durs, les têtes de lecture/écriture étant dans le lecteur.");
-        item.setCategories(new ArrayList<String>(Arrays.asList("périphérique", "support de stockage", "SCSI", "some stuff")));
-        item.setTechnicalDetails(new ArrayList<String>(Arrays.asList("Cartouches à disque dur, format 5¼ pouces", "Capacité de 88 Mo par cartouche", "Connexion SCSI")));
-        item.setLastUpdate();
-        item.setPictures(new ArrayList<ItemImage>(Arrays.asList(itemImage1, itemImage2)));
-
-        this.addItem(item);
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        long numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_NAME, null);
-        Log.d(TAG, "nb of rows="+numRows);
-        db.close();
-    }
+//    public void populate() {
+//        Log.d(TAG, "call populate()");
+//
+//        ItemImage itemImage1 = new ItemImage("description", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+//        ItemImage itemImage2 = new ItemImage("DESCRIPTION", "https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+//        Item item = new Item();
+//        item.setWebId("hsv");
+//        item.setName("Lecteur de cartouches amovibles 88 Mio");
+//        item.setThumbnail("https://demo-lia.univ-avignon.fr/cerimuseum/items/hsv/thumbnail");
+//        item.setBrand("SyQuest Technology");
+//        item.setYear(1991);
+//        item.setTimeFrame(new ArrayList<Integer>(Arrays.asList(1990)));
+//        item.setDesc("Les cartouches SyQuest dans leurs versions 44 et 88 Mo constituaient la solution la plus répandue (en particulier dans le monde Macintosh) pour les échanges de données volumineuses. Elles étaient très utilisées dans les domaines de la publication assistée par ordinateur et du multimédia.\nLes cartouches contenaient les plateaux de disques durs, les têtes de lecture/écriture étant dans le lecteur.");
+//        item.setCategories(new ArrayList<String>(Arrays.asList("périphérique", "support de stockage", "SCSI", "some stuff")));
+//        item.setTechnicalDetails(new ArrayList<String>(Arrays.asList("Cartouches à disque dur, format 5¼ pouces", "Capacité de 88 Mo par cartouche", "Connexion SCSI")));
+//        item.setLastUpdate();
+//        item.setPictures(new ArrayList<ItemImage>(Arrays.asList(itemImage1, itemImage2)));
+//
+//        this.addItem(item);
+//
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        long numRows = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM "+TABLE_NAME, null);
+//        Log.d(TAG, "nb of rows="+numRows);
+//        db.close();
+//    }
 
     public Item cursorToItem(Cursor cursor) {
 

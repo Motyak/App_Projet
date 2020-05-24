@@ -1,5 +1,6 @@
 package com.ceri.projet;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -71,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = menuItem.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sortAlphabetically) {
@@ -94,10 +95,15 @@ public class MainActivity extends AppCompatActivity {
             this.rvItems.setAdapter(this.adapter);
             this.tri = Tri.CATEGORIES;
         }
+        else if(id == R.id.action_redirect_to_search) {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            intent.putParcelableArrayListExtra("catalog", (ArrayList<Item>)this.simpleAdapter.catalog);
+            MainActivity.this.startActivity(intent);
+        }
 
         this.adapter.notifyItemRangeChanged(0, this.adapter.getItemCount());
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
 
     public void cacheCatalogImages() {

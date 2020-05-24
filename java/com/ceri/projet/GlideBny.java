@@ -92,6 +92,10 @@ public class GlideBny {
         Glide.with(act).load(url).submit();
     }
 
+    public static void saveInCacheResource(Activity act, int resId) {
+        Glide.with(act).load(resId).submit();
+    }
+
     public static void saveInCache(View view, String url) {
         Glide.with(view).load(url).submit();
     }

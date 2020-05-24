@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ceri.projet.MainActivity">
     <item
+        android:id="@+id/action_redirect_to_search"
+        android:orderInCategory="0"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/sortAlphabetically"
         android:orderInCategory="1"
         android:title="Ordre alphabétique"
