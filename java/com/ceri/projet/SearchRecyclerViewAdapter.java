@@ -91,10 +91,6 @@ public class SearchRecyclerViewAdapter extends RecyclerViewAdapter implements Fi
             SearchRecyclerViewAdapter.this.result.clear();
             SearchRecyclerViewAdapter.this.result.addAll((List)results.values);
 
-            //debug
-            for(Item item : SearchRecyclerViewAdapter.this.result)
-                System.out.println(item);
-
             SearchRecyclerViewAdapter.this.notifyDataSetChanged();
         }
     }

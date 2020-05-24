@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         else if(id == R.id.action_redirect_to_search) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             intent.putParcelableArrayListExtra("catalog", (ArrayList<Item>)this.simpleAdapter.catalog);
-            MainActivity.this.startActivity(intent);
+            MainActivity.this.startActivityForResult(intent, 1000);
         }
 
         this.adapter.notifyItemRangeChanged(0, this.adapter.getItemCount());
