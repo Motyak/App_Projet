@@ -57,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
 
 //        cache default image in case no picture found
         GlideBny.saveInCache(this, ItemImage.NO_PICTURES_IMAGE);
+
+        if(this.simpleAdapter.catalog.isEmpty()) {
+            new UpdateAllItemsTask().execute();
+            this.refresh.setRefreshing(true);
+        }
+
     }
 
     @Override

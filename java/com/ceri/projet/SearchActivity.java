@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
@@ -34,6 +36,12 @@ public class SearchActivity extends AppCompatActivity {
         registerForContextMenu(findViewById(R.id.rvSearchedItems));
 
         this.catalog = getIntent().getParcelableArrayListExtra("catalog");
+        Collections.sort(this.catalog, new Comparator<Item>() {
+            @Override
+            public int compare(Item i1, Item i2) {
+                return i1.getName().compareTo(i2.getName());
+            }
+        });
 
         this.searchAdapter = new SearchRecyclerViewAdapter(this, this.catalog);
 
