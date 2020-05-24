@@ -76,8 +76,28 @@ public class SearchRecyclerViewAdapter extends RecyclerViewAdapter implements Fi
             else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(Item item : SearchRecyclerViewAdapter.this.catalog) {
-                    if(item.getName().toLowerCase().startsWith(filterPattern))
+                    if(item.getName().toLowerCase().startsWith(filterPattern)) {
                         filteredList.add(item);
+                        continue;
+                    }
+                    if(item.getBrand().toLowerCase().startsWith(filterPattern)) {
+                        filteredList.add(item);
+                        continue;
+                    }
+                    if(String.valueOf(item.getYear()).startsWith(filterPattern)) {
+                        filteredList.add(item);
+                        continue;
+                    }
+                    for(String categorie : item.getCategories()) {
+                        if(categorie.toLowerCase().equals(filterPattern) && !filteredList.contains(item)) {
+                            filteredList.add(item);
+                            continue;
+                        }
+                        if(categorie.toLowerCase().startsWith(filterPattern) && !filteredList.contains(item)) {
+                            filteredList.add(item);
+                            continue;
+                        }
+                    }
                 }
             }
             FilterResults results = new FilterResults();
