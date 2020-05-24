@@ -2,11 +2,12 @@ package com.ceri.projet;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +16,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
@@ -24,6 +23,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView rvSearchedItems;
     private SearchRecyclerViewAdapter searchAdapter;
     private List<Item> catalog;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +53,20 @@ public class SearchActivity extends AppCompatActivity {
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                SearchActivity.this.searchView.setIconified(false);
+                SearchActivity.this.searchView.requestFocusFromTouch();
                 return false;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-//                Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-//                SearchActivity.this.startActivity(intent);
                 SearchActivity.this.finish();
                 return false;
             }
         });
 
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        this.searchView = (SearchView) searchItem.getActionView();
+        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -78,12 +78,24 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+        searchView.setIconifiedByDefault(true);
+        searchView.setFocusable(true);
+        searchView.setIconified(false);
+        searchView.requestFocusFromTouch();
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         if(searchManager != null)
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
+            this.searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        this.searchView.setIconifiedByDefault(false);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void showKeyboard(boolean show) {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(show)
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        else
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getRootView().getWindowToken(), 0);
     }
 }
