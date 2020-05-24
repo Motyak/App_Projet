@@ -70,6 +70,7 @@ public class SearchRecyclerViewAdapter extends RecyclerViewAdapter implements Fi
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Item> filteredList = new ArrayList<>();
+            List<Item> priority = new ArrayList<>();
 
             if(constraint == null || constraint.length() == 0)
                 filteredList.addAll(SearchRecyclerViewAdapter.this.catalog);
@@ -77,7 +78,7 @@ public class SearchRecyclerViewAdapter extends RecyclerViewAdapter implements Fi
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(Item item : SearchRecyclerViewAdapter.this.catalog) {
                     if(item.getName().toLowerCase().startsWith(filterPattern)) {
-                        filteredList.add(item);
+                        priority.add(item);
                         continue;
                     }
                     if(item.getBrand().toLowerCase().startsWith(filterPattern)) {
@@ -99,6 +100,7 @@ public class SearchRecyclerViewAdapter extends RecyclerViewAdapter implements Fi
                         }
                     }
                 }
+                filteredList.addAll(0, priority);
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;
